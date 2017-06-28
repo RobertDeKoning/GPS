@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kantar.Randstad.GPS", "Kantar.Randstad.GPS\Kantar.Randstad.GPS.csproj", "{7C747FA0-113B-4630-8B81-74E16A30CA56}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kantar.Randstad.GPS.Tests", "Kantar.Randstad.GPS.Tests\Kantar.Randstad.GPS.Tests.csproj", "{407161F6-5551-4599-920B-DBF46222AF00}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7C747FA0-113B-4630-8B81-74E16A30CA56}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7C747FA0-113B-4630-8B81-74E16A30CA56}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7C747FA0-113B-4630-8B81-74E16A30CA56}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7C747FA0-113B-4630-8B81-74E16A30CA56}.Release|Any CPU.Build.0 = Release|Any CPU
+		{407161F6-5551-4599-920B-DBF46222AF00}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{407161F6-5551-4599-920B-DBF46222AF00}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{407161F6-5551-4599-920B-DBF46222AF00}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{407161F6-5551-4599-920B-DBF46222AF00}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
