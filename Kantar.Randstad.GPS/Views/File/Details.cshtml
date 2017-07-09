@@ -1,0 +1,82 @@
+﻿@model Kantar.Randstad.GPS.Entities.FileResult
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>FileResult</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.FileName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FileName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CreatedDateTime)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CreatedDateTime)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.UserName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.UserName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Country)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Country)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.NumSuccess)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.NumSuccess)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.NumReject)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.NumReject)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.OriginalFile)
+        </dt>
+
+        <dd>
+            @Html.ActionLink("Download", "GetFile", new { id = Model.Id, fileType = nameof(Model.OriginalFile) })
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ResultFile)
+        </dt>
+            
+        <dd>
+            @Html.ActionLink("Download", "GetFile", new { id = Model.Id, fileType = nameof(Model.ResultFile) })
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Back to List", "Index")
+</p>

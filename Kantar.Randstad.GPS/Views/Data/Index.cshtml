@@ -1,0 +1,249 @@
+﻿@model PagedList.IPagedList<Kantar.Randstad.GPS.Entities.RandstadEmployee>
+@using PagedList.Mvc;
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+@using (Html.BeginForm("Index", "Data", FormMethod.Get))
+{
+    <p>
+        @Html.DropDownList("year", new SelectList(ViewBag.YearSelectionList))
+        @Html.DropDownList("country", new SelectList(ViewBag.CountrySelect))
+        Find by (part of) Email address: @Html.TextBox("email", ViewBag.CurrentFilter as string)
+        <input type="submit" value="Search" />
+    </p>
+<table class="table">
+
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => Model[0].SurveyYear)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => Model[0].EmailAddress)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => Model[0].FirstName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => Model[0].LastName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => Model[0].Gender)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => Model[0].Age)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => Model[0].DateOfBirth)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => Model[0].YearsOfService)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => Model[0].StartDateOfEmployment)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => Model[0].FunctionGroup)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => Model[0].FunctionalArea)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => Model[0].Level1)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => Model[0].Level2)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => Model[0].Level3)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => Model[0].Level4)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => Model[0].Level5)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => Model[0].Level6)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => Model[0].Level7)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => Model[0].Level8)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => Model[0].Level9)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => Model[0].LevelManager)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => Model[0].ReportingLine)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => Model[0].Country)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => Model[0].NameOfOperatingCompany)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => Model[0].AdditionalParameterA)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => Model[0].AdditionalParameterB)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => Model[0].AdditionalParameterC)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => Model[0].AdditionalParameterD)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => Model[0].AdditionalParameterE)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => Model[0].AdditionalParameterF)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => Model[0].AdditionalParameterG)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => Model[0].Language)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => Model[0].CreatedDateTimeUtc)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => Model[0].UploadedBy)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => Model[0].FileName)
+        </th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.SurveyYear)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.EmailAddress)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.FirstName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.LastName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Gender)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Age)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DateOfBirth)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.YearsOfService)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.StartDateOfEmployment)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.FunctionGroup)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.FunctionalArea)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Level1)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Level2)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Level3)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Level4)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Level5)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Level6)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Level7)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Level8)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Level9)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.LevelManager)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ReportingLine)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Country)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.NameOfOperatingCompany)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.AdditionalParameterA)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.AdditionalParameterB)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.AdditionalParameterC)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.AdditionalParameterD)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.AdditionalParameterE)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.AdditionalParameterF)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.AdditionalParameterG)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Language)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.CreatedDateTimeUtc)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.UploadedBy)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.FileName)
+        </td>
+    </tr>
+}
+
+</table>
+<div id='Paging' style="text-align:center">
+    Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber)
+    of @Model.PageCount
+
+    @Html.PagedListPager(Model, page => Url.Action("Index", new { page }))
+</div>
+}
