@@ -15,7 +15,7 @@
 {
     <p>
         @Html.DropDownList("year", new SelectList(ViewBag.YearSelectionList))
-        @Html.DropDownList("country", new SelectList(ViewBag.CountrySelect))
+        @Html.DropDownList("country", new SelectList(ViewBag.CountrySelectionList))
         Find by (part of) Email address: @Html.TextBox("email", ViewBag.CurrentFilter as string)
         <input type="submit" value="Search" />
     </p>
@@ -244,6 +244,6 @@
     Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber)
     of @Model.PageCount
 
-    @Html.PagedListPager(Model, page => Url.Action("Index", new { page }))
+    @Html.PagedListPager(Model, page => Url.Action("Index", new { page, year = ViewBag.YearSelected, country = ViewBag.CountrySelected, email = ViewBag.CurrentFilter }))
 </div>
 }

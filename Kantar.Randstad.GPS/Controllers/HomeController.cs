@@ -68,7 +68,7 @@ namespace Kantar.Randstad.GPS.Controllers
                             var removeList = dbContext.RandstadEmployees.Where(r => r.Country == file.Country && r.SurveyYear == file.Year).ToList();
                             dbContext.RandstadEmployees.RemoveRange(removeList);
                             ValidateRecords.FindInvalidRecords(records);
-                            //ValidateRecords.GenerateWarningsForChangedRecords(records);
+                            ValidateRecords.GenerateWarningsForChangedRecords(records, dbContext);
                             dbContext.RandstadEmployees.AddRange(records.Where(r => r.Valid));
 
                         }

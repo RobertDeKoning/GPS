@@ -10,11 +10,12 @@ namespace Kantar.Randstad.GPS.Helpers
 {
     public static class ValidateRecords
     {
-        private static string[] Genders = new[] {"M","F","?" };
+        private static string[] Genders = new[] {"M","F"};
         private static List<string> FunctionGroups;
         private static List<string> Countries;
         private static List<string> Languages;
         private static EmailAddressAttribute emailValid = new EmailAddressAttribute();
+        private static RegularExpressionAttribute RexExpEmail = new RegularExpressionAttribute(@"^[a-zA-Z\.@]+$");
         private static RegularExpressionAttribute RegExpFuncArea = new RegularExpressionAttribute(@"\A(X\.(0[1-9]|10))$");
         private static RegularExpressionAttribute RegExpNames = new RegularExpressionAttribute("\\D+");
 
@@ -53,6 +54,107 @@ namespace Kantar.Randstad.GPS.Helpers
             }
         }
 
+        internal static void GenerateWarningsForChangedRecords(List<RandstadEmployee> employees, RandstadContext dbContext)
+        {
+            foreach (var employee in employees)
+            {
+                List<string> warnings = new List<string>();
+                try {
+                    var employeePreviousYear = dbContext.RandstadEmployees.Find(employee.SurveyYear - 1, employee.EmailAddress);
+                    if (employeePreviousYear == null)
+                    {
+                        warnings.Add("New person found, not in database of last year");
+                    }
+                    warnings.AddNamesChangedWarnings(employee, employeePreviousYear);
+                    warnings.AddGenderChangedWarnings(employee, employeePreviousYear);
+                    warnings.AddLevelChangedWarnings(employee, employeePreviousYear);
+                    warnings.AddReportingLineWarnings(employees, employee, employeePreviousYear);
+                    warnings.AddCountryChangedWarnings(employee, employeePreviousYear);
+                    warnings.AddLanguageChangedWarnings(employee, employeePreviousYear);
+                }
+                catch (Exception exception)
+                {
+                    warnings.Add($"Error thrown, records could not be resolved. Message: {exception.Message}");
+                }
+                finally {
+                    if (warnings.Any())
+                    {
+                        employee.Feedback += $"Warnings found: {string.Join("; ", warnings)}.";
+                    }
+                }
+            }
+        }
+
+
+
+        private static List<string> AddLanguageChangedWarnings(this List<string> warnings, RandstadEmployee employee, RandstadEmployee employeePreviousYear)
+        {
+            if (!employee.Language.Equals(employeePreviousYear.Language))
+            {
+                warnings.Add($"Country changed: {employeePreviousYear.SurveyYear} '{employeePreviousYear.Language}', {employee.SurveyYear} '{employee.Language}'");
+            }
+            return warnings;
+        }
+
+        private static List<string> AddCountryChangedWarnings(this List<string> warnings, RandstadEmployee employee, RandstadEmployee employeePreviousYear)
+        {
+            if (!employee.Country.Equals(employeePreviousYear.Country))
+            {
+                warnings.Add($"Country changed: {employeePreviousYear.SurveyYear} '{employeePreviousYear.Country}', {employee.SurveyYear} '{employee.Country}'");
+            }
+            return warnings;
+        }
+
+        private static List<string> AddReportingLineWarnings(this List<string> warnings, List<RandstadEmployee> employees, RandstadEmployee employee, RandstadEmployee employeePreviousYear)
+        {
+            if(!employees.Where(x=>$"{x.FirstName} {x.LastName}".Equals(employee.ReportingLine)).Any() || employees.Where(x => x.EmailAddress.Equals(employee.ReportingLine)).Any())
+            {
+                warnings.Add($"Reporting line '{employee.ReportingLine}' does not exact match a name or email in the file");
+            }
+            if (!employee.ReportingLine.Equals(employeePreviousYear.ReportingLine))
+            {
+                warnings.Add($"Reporting line changed: {employeePreviousYear.SurveyYear} '{employeePreviousYear.ReportingLine}', {employee.SurveyYear} '{employee.ReportingLine}'");
+            }
+            return warnings;
+        }
+
+        private static List<string> AddNamesChangedWarnings(this List<string> warnings, RandstadEmployee employee, RandstadEmployee employeePreviousYear)
+        {
+            if (!employee.FirstName.Equals(employeePreviousYear.FirstName))
+            {
+                warnings.Add($"First name changed: {employeePreviousYear.SurveyYear} '{employeePreviousYear.FirstName}', {employee.SurveyYear} '{employee.FirstName}'");
+            }
+            if (!employee.LastName.Equals(employeePreviousYear.LastName))
+            {
+                warnings.Add($"Last name changed: {employeePreviousYear.SurveyYear} '{employeePreviousYear.LastName}', {employee.SurveyYear} '{employee.LastName}'");
+            }
+            return warnings;
+        }
+
+        private static List<string> AddGenderChangedWarnings(this List<string> warnings, RandstadEmployee employee, RandstadEmployee employeePreviousYear)
+        {
+            if (!employee.Gender.Equals(employeePreviousYear.Gender))
+            {
+                warnings.Add($"Gender changed: {employeePreviousYear.SurveyYear} '{employeePreviousYear.Gender}', {employee.SurveyYear} '{employee.Gender}'");
+            }
+            return warnings;
+        }
+
+        private static List<string> AddLevelChangedWarnings(this List<string> warnings, RandstadEmployee employee, RandstadEmployee employeePreviousYear)
+        {
+            var fields = employee.GetType().GetProperties().Where(x => x.Name.Contains("Level") && x.Name.Length == 6).Select(x => x.Name).OrderBy(q => q).ToList();
+            foreach (var field in fields)
+            {
+                var employeeLevelValue = employee.GetType().GetProperty(field).GetValue(employee, null) as string;
+                var employeePreviousYearLevelValue = employeePreviousYear.GetType().GetProperty(field).GetValue(employeePreviousYear, null) as string;
+                if (!employeeLevelValue.Equals(employeePreviousYearLevelValue))
+                {
+                    warnings.Add($"{field} changed: {employeePreviousYear.SurveyYear} '{employeeLevelValue}', {employee.SurveyYear} '{employeePreviousYearLevelValue}'");
+                }
+            }
+            return warnings;
+        }
+
         private static List<string> AddLevelSequenceErrors(this List<string> errors, RandstadEmployee record)
         {
             var fields = record.GetType().GetProperties().Where(x => x.Name.Contains("Level") && x.Name.Length == 6).Select(x=>x.Name).OrderByDescending(q => q).ToList();
@@ -83,10 +185,7 @@ namespace Kantar.Randstad.GPS.Helpers
             return errors;
         }
 
-        internal static void GenerateWarningsForChangedRecords(List<RandstadEmployee> records)
-        {
-            throw new NotImplementedException();
-        }
+        
 
         private static List<string> AddLevel1Errors(this List<string> errors, RandstadEmployee record)
         {
@@ -185,13 +284,18 @@ namespace Kantar.Randstad.GPS.Helpers
 
         private static List<string> AddEmailErrors(this List<string> errors, RandstadEmployee record)
         {
-            if (string.IsNullOrEmpty(record.EmailAddress))
+            var field = record.EmailAddress;
+            if (string.IsNullOrEmpty(field))
             {
                 errors.Add("Email address is empty");
             }
-            else if (!emailValid.IsValid(record.EmailAddress))
+            else if (!emailValid.IsValid(field))
             {
-                errors.Add($"Invalid email address '{record.EmailAddress}' found");
+                errors.Add($"Invalid email address '{field}' found");
+            }
+            else if (!RexExpEmail.IsValid(field))
+            {
+                errors.Add($"Invalid characters found in email address '{field}'");
             }
             return errors;
         }
